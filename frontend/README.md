@@ -68,3 +68,43 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+Deploy static website using GitHub Action CI/CD with Docker
+
+	Take a Fresh zip of MERN_CRUD 
+
+	View-> Show -> hidden file
+	delete .git file from Frontend and backend 
+	create dockerfile in Frontend and backend
+	GitHub Create a new Repository of Any name
+	Create EC2 instance as Default(Ubuntu) and storage 30 Gb
+	Copy IP of EC2 and past it into Frontend src/app.js
+	And backend server.js change name IP to (mongo) (line 15)
+	Take URL of Repo and open gitbash in any path clone repo
+	Past Frontend and backend in Clone folder
+	GitBash
+	and check it ls -a 
+	git add .
+	git commit -m "MERN Frontend and backend"
+	git push
+
+
+	Check it in to GitHub repo
+
+	Create 5 secrets
+
+	GitHub Setting -> Secrats and variable -> Action -> Create -> past dockerHub username -> DOCKER_USERNAME
+
+	GitHub Setting -> Secrats and variable -> Action -> Create -> past dockerHub password -> DOCKER_PASSWORD
+
+	GitHub Setting -> Secrats and variable -> Action -> Create -> past EC2_HOST -> DSN of EC2
+	
+	GitHub Setting -> Secrats and variable -> Action -> Create -> past EC2_USERNAME -> ubuntu
+
+	GitHub Setting -> Secrats and variable -> Action -> Create -> past EC2_KEY -> pem file
+
+	Copy .yml
+
+	GitHub -> Action -> past .yml-> name -> commit change ->
+
