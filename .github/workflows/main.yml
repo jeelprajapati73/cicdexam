@@ -1,0 +1,57 @@
+name: CI/CD Pipeline with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_IMAGE: your-dockerhub-username/mern-backend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 3. Build Docker Image
+      - name: Build Docker Image
+        run: docker build -t $DOCKER_IMAGE:latest .
+
+      # 4. Push Image to Docker Hub
+      - name: Push Docker Image
+        run: docker push $DOCKER_IMAGE:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      # 5. Deploy on Server via SSH
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker stop mern-backend || true
+            docker rm mern-backend || true
+
+            docker pull $DOCKER_IMAGE:latest
+
+            docker run -d \
+              --name mern-backend \
+              -p 5000:5000 \
+              --network mern-network \
+              $DOCKER_IMAGE:latest
